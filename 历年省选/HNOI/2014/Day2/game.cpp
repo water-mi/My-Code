@@ -18,14 +18,16 @@ int T, F, n, s, sg[_], f[_];
 bool mex[_];
 
 int SG(int x) {
-	if(~sg[x]) return sg[x];
-	if(x < F) return sg[x] = 0
+	if(~sg[x]) return sg[x];//记忆化搜索
+	if(x < F) return sg[x] = 0;//小于F即必败
 	for(int l = 2, r; l <= x; l = r + 1) {
 		r = x / (x / l);
 		for(int j = l; j <= min(l + 1, r); ++j) {
+			//计算j与j+1即可
 			int a = x % j, b = x / j + 1, c = j - x % j, d = x / j, s = 0;
 			if(a & 1) s ^= SG(b);
 			if(c & 1) s ^= SG(d);
+			//奇数才能产生贡献，自身与自身的异或值为0
 			f[s] = x;
 		}
 	}

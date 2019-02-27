@@ -39,6 +39,7 @@ struct SegmentTree {
 		return val;
 	}
 } tree;
+//主席树区间第k大打板子，没有什么不同的地方。
 
 namespace temp {
 	int n, fa[Log][_], dep[_], S[_], T[_], tim, sta[_];
@@ -53,7 +54,7 @@ namespace temp {
 		for(int i = from[u]; i; i = nxt[i])
 			if(to[i] != f) dfs(to[i], u);
 		T[u] = tim;
-	}
+	}//同样是预处理，没什么好讲的，理解每个数组的含义照着含义模拟即可
 	void Init() {
 		int u, v;
 		for(int i = 1; i < n; ++i)
@@ -62,6 +63,7 @@ namespace temp {
 		tree.build(tree.rt[0], 1, n);
 		for(int i = 1; i <= n; ++i)
 			tree.rt[i] = tree.modify(tree.rt[i - 1], 1, n, sta[i]);
+		//预处理一些该处理的东西，比如主席树之类的
 	}
 	int getdist(int x, int y) {
 		int ret = 0;
@@ -76,8 +78,9 @@ namespace temp {
 				x = fa[i][x], y = fa[i][y];
 			}
 		return ret + 2;
-	}
+	}//这里不是求LCA,是在求解LCA的时候顺带着把距离给算出来了
 }
+//模板树
 
 namespace big {
 	int n, m, fa[Log][_], dep[_], pre[_];
@@ -96,6 +99,7 @@ namespace big {
 			r = tree.rt[temp::T[pre[rt]]];
 		return tree.query(l, r, 1, temp::n, x - S[rt] + 1);
 	}
+	//以上两个函数题解中讲的应该很清楚了
 	void Init() {
 		n = dep[1] = pre[1] = 1, S[1] = 1ll;
 		poi = T[1] = temp::n;
@@ -105,31 +109,40 @@ namespace big {
 			++n, dep[n] = dep[rt] + 1, lnk[n] = to, pre[n] = x;
 			S[n] = poi + 1, T[n] = poi + temp::T[x] - temp::S[x] + 1, poi = T[n];
 			fa[0][n] = rt;
+			//fa,dep，dist这些数组都是大点相关，跟小的结点无关
 			dist[0][n] = temp::dep[getpre(to)] - temp::dep[pre[rt]] + 1;
 			for(int j = 1; j <= 16; ++j) {
 				fa[j][n] = fa[j - 1][fa[j - 1][n]];
 				dist[j][n] = dist[j - 1][n] + dist[j - 1][fa[j - 1][n]];
-			}
+			}//倍增更新信息
 		}
 	}
 	ll doit(ll x, ll y) {
 		ll ret = 0; int fx = getrt(x), fy = getrt(y);
 		if(fx == fy) return temp::getdist(getpre(x), getpre(y));
+		//如果在同一个大点内直接求解，否则在大点上倍增
 		if(dep[fx] < dep[fy]) swap(x, y), swap(fx, fy);
 		ret += temp::dep[getpre(x)] - temp::dep[pre[fx]], x = fx;
+		//计算出小结点x到所在大点的根的距离
 		for(int i = 16; i >= 0; --i)
 			if(dep[fa[i][x]] > dep[fy])
 				ret += dist[i][x], x = fa[i][x];
+		//在大点上倍增
 		if(getrt(lnk[x]) == fy)
 			return ret + 1 + temp::getdist(getpre(lnk[x]), getpre(y));
+		//此时如果此时就在fy这个大点的下方（即lnk[x]就在fy内），计算一下lnk[x]到它所在大点的根的距离+1+ret
 		ret += temp::dep[getpre(y)] - temp::dep[pre[fy]], y = fy;
+		//计算出小结点y到所在大点的根的距离，然后两个大点一起跳
 		if(dep[x] > dep[y]) ret += dist[0][x], x = fa[0][x];
+		//之前可能还没有跳到同一深度，补跳一次
 		for(int i = 16; i >= 0; --i)
 			if(fa[i][x] != fa[i][y]) {
 				ret += dist[i][x] + dist[i][y];
 				x = fa[i][x], y = fa[i][y];
 			}
+		//在大点上一起跳
 		x = lnk[x], y = lnk[y]; ret += 2;
+		//此时再往上跳一次就进入了同一个大点，然后求一下在大点这棵子树内的距离即可
 		return ret + temp::getdist(getpre(x), getpre(y));
 	}
 }

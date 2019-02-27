@@ -36,12 +36,13 @@ void unionn(int x, int y, int a, int b) { //y->x
         ChkMax(MXa[fx], MXa[fy]);
         ChkMax(MXb[fx], MXb[fy]);
     } ChkMax(MXa[fx], a), ChkMax(MXb[fx], b);
-}
+}//合并的时候把该记的信息都丢进栈里面，撤销需要用。
 
 int main () {
 	freopen("multiple.in", "r", stdin);
 	freopen("multiple.out", "w", stdout);
     read(n), read(m), size = sqrt(m);
+	//最后发现size取mlog2(n)最优
     for(int i = 1; i <= m; ++i) {
         read(a[i].u), read(a[i].v);
         read(a[i].a), read(a[i].b);
@@ -63,9 +64,11 @@ int main () {
         if(!tot) continue;
         if(i > 1) sort(a + 1, a + i, cmpb);
         for(int j = 1, k = 1; j <= tot; ++j) {
+			//之前的边（two-pointers）
             for(; k < i && a[k].b <= c[j].b; ++k)
                 unionn(a[k].u, a[k].v, a[k].a, a[k].b);
             top = 0;
+			//块内的边
             for(int l = i; l < i + size && l <= m; ++l)
                 if(a[l].a <= c[j].a && a[l].b <= c[j].b)
                     unionn(a[l].u, a[l].v, a[l].a, a[l].b);
@@ -76,7 +79,7 @@ int main () {
                 int u = d[l].u, v = d[l].v; fa[v] = v;
                 MXa[u] = d[l].a, MXb[u] = d[l].b;
                 siz[u] = d[l].k;
-            }
+            }//栈序撤销
         }
     }
     for(int i = 1; i <= q; ++i) puts(ans[i] ? "Yes" : "No");

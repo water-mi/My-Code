@@ -45,9 +45,11 @@ int main () {
     for(int i = 1; i <= n; ++i) read(B[i]);
     for(int i = 1; i <= n; ++i) {
         part1 += pow2(A[i]) + pow2(B[i]);
-        part2 += A[i] - B[i];
+        part2 += A[i] - B[i];//这里借用一下part2
     } ll x1 = -floor(1. * part2 / n), x2 = -ceil(1. * part2 / n);
+	//求解第一部分定值
     part3 = min(n * pow2(x1) + 2 * x1 * part2, n * pow2(x2) + 2 * x2 * part2);
+	//求解第三部分二次函数最小值（有误差，所以顶点上下取整后的函数值都要计算一下）
     for(int i = 1; i <= n; ++i) A[i + n] = A[i];
     m = n, n <<= 1; std::reverse(B + 1, B + m + 1);
     int tmpm = m, tmpn = n;
@@ -58,9 +60,10 @@ int main () {
         r[i] = (r[i >> 1] >> 1) | ((i & 1) << (lg - 1));
     FFT(a, 1), FFT(b, 1);
     for(int i = 0; i < n; ++i) a[i] = a[i] * b[i]; 
-    FFT(a, -1), part2 = 0;
+    FFT(a, -1), part2 = 0;//如果你也借用了part2记得清零
     for(int i = tmpm; i <= tmpn + 1; ++i)
         part2 = max(part2, (ll)(a[i].x / n +.5));
+	//FFT求解第二部分的值
     printf("%lld\n", part1 + part3 - 2 * part2);
     return 0;
 }

@@ -74,7 +74,7 @@ void build() {
 		addEdge(stk[top - 1], stk[top], dis);
 		--top;
 	}
-}
+}//建立虚树
 
 void dfs1(int u, int f) {
 	cont[u] = siz[u]; t[++tot] = u;

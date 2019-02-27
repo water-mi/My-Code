@@ -34,6 +34,7 @@ void dfs(int u, int fa) {
 		int v = to[e]; if(v == fa) continue;
 		dfs(v, u);
 		for(int i = 1; i <= n; ++i) g[i] = 0;
+		//做类似树形背包的转移
 		for(int i = 1; i <= siz[u] + siz[v]; ++i)
 			for(int j = 1; j <= siz[u]; ++j)
 				for(int k = 1; k <= siz[v]; ++k) {
@@ -59,18 +60,21 @@ int main () {
 	for(int i = 1; i <= m; ++i) {
 		scanf("%d %c%d", &p[i].x, &p[i].r, &p[i].y);
 		if(p[i].r == '=') unionn(p[i].x, p[i].y);
-	}
+	}//先将相等的点连接起来
 	for(int i = 1; i <= n; ++i)
 		bel[i] = find(i), isroot[bel[i]] = 1, fa[i] = i;
+	//缩点
 	for(int i = 1; i <= m; ++i)
 		if(p[i].r == '<') {
 			addEdge(bel[p[i].x], bel[p[i].y]), addEdge(bel[p[i].y], bel[p[i].x]);
 			++ind[bel[p[i].y]];
 			if(unionn(bel[p[i].x], bel[p[i].y])) { puts("0"); return 0; }
 		}
+	//建森林
 	for(int i = 1; i <= n; ++i)
 		if(!ind[i] && isroot[i])
 			addEdge(n + 1, i), addEdge(i, n + 1);
+	//建树
 	int ret = 0; dfs(n + 1, 0);
 	for(int i = 1; i <= siz[n + 1]; ++i)
 		(ret += f[n + 1][i]) %= P;

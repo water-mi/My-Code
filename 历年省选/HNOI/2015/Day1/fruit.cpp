@@ -72,13 +72,14 @@ void Div(int l, int r, int st, int ed, int lval, int rval) {
 	}
 	int mid = (lval + rval) >> 1, j = l;
 	int pl = l, pr = r, ql = st, qr = ed, tmp;
+	//特殊的two-pointers保证x升序，细节5
 	for(int i = st; i <= ed; ++i) {
 		for(; j <= r && p[j].x <= q[i].x; ++j)
 			if(p[j].val > h[mid]) tp[pr--] = p[j];
 			else add(p[j].L, p[j].R, p[j].w), tp[pl++] = p[j];
 		q[i].k > (tmp = query(q[i].y)) ?
 			q[i].k -= tmp, tq[qr--] = q[i] : tq[ql++] = q[i];
-	}
+	}//细节4(2)
 	for(; j <= r; ++j)
 		if(p[j].val > h[mid]) tp[pr--] = p[j];
 		else add(p[j].L, p[j].R, p[j].w), tp[pl++] = p[j];
@@ -98,12 +99,12 @@ int main () {
 	int x, y, z;
 	for(int i = 1; i < n; ++i)
 		read(x), read(y), addEdge(x, y), addEdge(y, x);
-	dfs(1), dfs(1, 1);
+	dfs(1), dfs(1, 1);//重链剖分
 	for(int i = 1; i <= P; ++i) {
 		read(x), read(y), read(h[i]);
 		if(L[x] > L[y]) swap(x, y);
-		if(L[x] <= L[y] && L[y] <= R[x]) {
-			z = Find(x, y);
+		if(L[x] <= L[y] && L[y] <= R[x]) {//细节1
+			z = Find(x, y);//细节2
 			p[++m] = (Line){1, L[y], R[y], 1, h[i]};
 			p[++m] = (Line){L[z], L[y], R[y], -1, h[i]};
 			if(R[z] < n) {
@@ -114,9 +115,10 @@ int main () {
 			p[++m] = (Line){L[x], L[y], R[y], 1, h[i]};
 			p[++m] = (Line){R[x] + 1, L[y], R[y], -1, h[i]};
 		}
-	}
+	}//细节3
 	sort(p + 1, p + m + 1), sort(h + 1, h + P + 1);
 	tot = unique(h + 1, h + P + 1) - h - 1;
+	//细节4(1)
 	for(int i = 1; i <= Q; ++i) {
 		read(x), read(y), read(z);
 		if(L[x] > L[y]) swap(x, y);

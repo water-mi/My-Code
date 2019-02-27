@@ -39,12 +39,14 @@ int main () {
 		pre[i] = st[top], st[++top] = i;
 	}
 	while(top) pre[st[top]] = st[top - 1], suf[st[top--]] = n + 1;
+	//单调栈求出前后第一大位置
 	int x, y;
 	for(int i = 1; i <= m; ++i) {
 		read(x), read(y), ans[i] += (y - x) * p1;
 		q1[i] = (Ques){x, y, x - 1, i, -1};
 		q1[i + m] = (Ques){x, y, y, i, 1};
 	}
+	//将询问拆成两个，即统计点1...r对区间[l,r]的贡献减去点1...l-1对区间[l,r]的贡献
 	m <<= 1;
 	sort(q1 + 1, q1 + m + 1);
 	int tot = 0;
@@ -56,18 +58,21 @@ int main () {
 		if(pre[i] + 1 < i && suf[i] <= n)
 			q2[++tot] = (Ques){pre[i] + 1, i - 1, suf[i], 0, p2};
 	}
+	//三种情况，每个点对于哪些区间有贡献
 	sort(q2 + 1, q2 + tot + 1); int top1 = 1, top2 = 1;
-	while(!q1[top1].x) ++top1;
+	while(!q1[top1].x) ++top1;//跳过一些不用统计开头的区间
 	for(int i = 1; top1 <= m && i <= n; ++i) {
 		while(top2 <= tot && q2[top2].x == i) {
 			add(q2[top2].r + 1, -q2[top2].v);
 			add(q2[top2].l, q2[top2].v);
 			++top2;
 		}
+		//先添加贡献
 		while(top1 <= m && q1[top1].x == i) {
 			ll now = q1[top1].v * (sum(q1[top1].r) - sum(q1[top1].l - 1));
 			ans[q1[top1].id] += now, ++top1;
 		}
+		//计算贡献
 	}
 	m >>= 1;
 	for(int i = 1; i <= m; ++i) printf("%lld\n", ans[i]);

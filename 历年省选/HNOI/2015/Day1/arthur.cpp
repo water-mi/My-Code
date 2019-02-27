@@ -17,7 +17,7 @@ int main () {
         for(int i = 0; i < n; ++i) {
             pow[i][0] = 1;
             for(int j = 1; j <= r; ++j)
-                pow[i][j] = pow[i][j - 1] * (1 - p[i]);
+                pow[i][j] = pow[i][j - 1] * (1 - p[i]);//预处理(1-p[i])的幂
         }
         memset(f, 0, sizeof f), memset(fp, 0, sizeof fp);
         f[0][0] = pow[0][r], f[0][1] = fp[0] = 1 - f[0][0];

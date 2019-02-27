@@ -77,6 +77,7 @@ int main () {
 			for(int k = 1; k <= r; ++k)
 				addEdge(p * q * (k - 1) + x, p * q * k + x, v[i][j][k]);
 		}
+	//建立无d限制连边
 	for(int i = 1; i <= p; ++i)
 		for(int j = 1; j <= q; ++j)
 			for(int f = 0; f < 4; ++f) {
@@ -86,6 +87,7 @@ int main () {
 					addEdge(p * q * (k - 1) + (i - 1) * q + j,
 							p * q * (k - d - 1) + (x - 1) * q + y, Inf);
 			}
+	//建立d限制连边
 	Dinic::main();
 	printf("%d\n", Dinic::maxflow);
     return 0;

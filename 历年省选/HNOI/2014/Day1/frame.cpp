@@ -71,7 +71,7 @@ namespace KM {
 				reta += a[match[i]][i], retb += b[match[i]][i];
 		return (vector){reta, retb};
 	}
-}
+}//KM求解二分图带权最小匹配（有些细节不同）
 
 void doit(const vector &A, const vector &B) {
 	KM::build(A.y - B.y, B.x - A.x);
@@ -79,7 +79,7 @@ void doit(const vector &A, const vector &B) {
 	ans = min(ans, C.x * C.y);
 	if((B - A) * (C - A) >= 0) return ;
 	doit(A, C), doit(C, B);
-}
+}//不断寻找最远的C
 
 int T;
 int main () {

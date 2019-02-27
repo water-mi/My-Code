@@ -50,6 +50,7 @@ ll query(int o, int l, int r, int ql, int qr) {
 	else return ret + query(lson[o], l, mid, ql, mid) +
 			 query(rson[o], mid + 1, r, mid + 1, qr);
 }
+//主席树套路
 
 int fa[_], son[_], dfn[_], top[_], siz[_], tim;
 void dfs(int u) {
@@ -88,6 +89,7 @@ ll query(int rt, int x) {
 	}
 	return ret + query(rt, 1, n, dfn[1], dfn[x]);
 }
+//树链剖分套路
 
 int main () {
     freopen("shop.in", "r", stdin);
@@ -104,8 +106,9 @@ int main () {
 	for(int i = 1; i <= n; ++i) {
 		sumdep[i] += sumdep[i - 1] + dep[x[i].id];;
 		sumpre[i] += sumpre[i - 1];
-	}
+	}//预处理出第二项以及链值
 	for(int i = 1; i <= n; ++i) rt[i] = modify(x[i].id);
+	//对于每个点到根节点的路径覆盖
 	for(int i = 1, p, l, r; i <= q; ++i) {
 		read(p), read(l), read(r);
 		l = (1ll * l + ret) % A;

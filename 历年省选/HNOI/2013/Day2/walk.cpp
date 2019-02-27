@@ -54,15 +54,16 @@ int main () {
 		addEdge(u[i], v[i]), addEdge(v[i], u[i]);
 	}
 	for(int x = 1; x <= n; ++x) {
-		a[x][x] = -1.;
+		a[x][x] = -1.;//减去单位矩阵
 		for(int i = from[x]; i; i = nxt[i])
 			if(to[i] != n)
-				a[x][to[i]] = 1. / d[to[i]];
+				a[x][to[i]] = 1. / d[to[i]];//构造邻接矩阵
 	}
 	a[1][n] = -1.;
-	Gauss();
+	Gauss();//求出点的概率
 	for(int i = 1; i <= m; ++i)
 		w[i] = p[u[i]] / d[u[i]] + p[v[i]] / d[v[i]];
+	//计算边的概率
 	sort(w + 1, w + m + 1);
 	double ret = 0;
 	for(int i = 1; i <= m; ++i) ret += w[i] * (m - i + 1);

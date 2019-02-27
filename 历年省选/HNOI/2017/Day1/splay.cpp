@@ -59,10 +59,12 @@ namespace LCT {
             if(!isroot(fa[x])) rotate(chk(fa[x]) == chk(x) ? fa[x] : x);
     }
 }
+//LCT模板，唯一一个新添的getdep操作已经在题解中解释过了
 
 using namespace LCT;
 map<int, int> m; set<int> s;
 int Fa[N], lson[N], rson[N];
+//各种数据结构
 
 void insert(int x) {
 	int now = m[x] = ++poi;
@@ -71,6 +73,7 @@ void insert(int x) {
 		puts("1"); return ;
 	}
 	set<int>::iterator it = s.upper_bound(x);
+	//分情况讨论插入左/右儿子
 	if(it == s.end() || lson[m[*it]]) {
 		--it; int node = m[*it];
 		link(now, node);
@@ -80,11 +83,13 @@ void insert(int x) {
 		link(now, node);
 		Fa[now] = node, lson[node] = now;
 	}
+	//一定要记得插入set中!!!
 	s.insert(x), printf("%d\n", getdep(now));
 }
 void getmin() {
 	int x = m[*s.begin()];
 	if(rt == x) { puts("1"); return ; }
+	//模拟单旋过程（改变父子关系）
 	printf("%d\n", getdep(x)), cut(x, Fa[x]);
 	if(rson[x]) cut(x, rson[x]);
 	link(x, rt); if(rson[x]) link(Fa[x], rson[x]);
@@ -109,6 +114,7 @@ void delmin() {
 		s.erase(s.begin());
 		return ;
 	}
+	//简化了一些没有必要的单旋过程，顺带着把x给删了
 	printf("%d\n", getdep(x)), cut(x, Fa[x]);
 	if(rson[x]) cut(x, rson[x]), link(Fa[x], rson[x]);
 	lson[Fa[x]] = rson[x]; if(rson[x]) Fa[rson[x]] = Fa[x];
@@ -120,6 +126,7 @@ void delmax() {
 		puts("1");
 		if(lson[x]) cut(x, lson[x]);
 		Fa[lson[x]] = 0, rt = lson[x];
+		//这里不能写erase(rbegin())，rbgein()是反迭代器，erase只能接受迭代器
 		s.erase(--s.end());
 		return ;
 	}
@@ -128,6 +135,7 @@ void delmax() {
 	rson[Fa[x]] = lson[x]; if(lson[x]) Fa[lson[x]] = Fa[x];
 	s.erase(--s.end());
 }
+//上面四个操作都要记得判根
 
 int q, x, y;
 int main () {

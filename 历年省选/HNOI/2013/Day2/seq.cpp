@@ -22,7 +22,7 @@ ll qpow(ll a, ll b) {
 int main () {
     freopen("seq.in", "r", stdin);
     freopen("seq.out", "w", stdout);
-	read(n), read(k), read(m), read(p), n %= p;
+	read(n), read(k), read(m), read(p), n %= p;//n记得取模
 	ll a = qpow(m, k - 1) * n % p;
 	ll b = (m * (m + 1) / 2) % p * (k - 1) % p * qpow(m, k - 2) % p;
 	printf("%lld\n", (a + p - b) % p);

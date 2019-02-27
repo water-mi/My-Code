@@ -34,6 +34,7 @@ struct String {
 		h.pb(0), star.pb(0), len = cnt = 0;
 	}
 	void Init (string S) {
+		//预处理出每一段的分界点和哈希值
 		for(string::iterator it = S.begin(); it != S.end(); ++it) {
 			h.pb(h.back() * P + *it), ++len;
 			if(*it == '*') star.pb(len), ++cnt;
@@ -44,12 +45,13 @@ struct String {
 		if(a.len - tmp < star[1] - 1) return 0;
 		if(Get(1, star[1] - 1) != a.Get(1, star[1] - 1)) return 0;
 		if(Get(star[cnt] + 1, len) != a.Get(a.len - tmp + 1, a.len)) return 0;
+		//对应题解中的情况1和3
 		int st = star[1], ed = a.len - tmp;
 		for(int i = 1; i < cnt; ++i) {
 			int k = star[i + 1] - star[i] - 1;
 			ui H = Get(star[i] + 1, star[i + 1] - 1);
 			while(1) {
-				if(st + k - 1 > ed) return 0;
+				if(st + k - 1 > ed) return 0;//对应题解中的情况2
 				if(a.Get(st, st + k - 1) == H) {
 					st += k; break;
 				} ++st;
@@ -67,7 +69,9 @@ bool doit() {
 			if(!pos) H = s[i].h[s[i].len], pos = i;
 			else if(s[i].h[s[i].len] != H) return 0;
 		}
+	//先对没有通配符的字符串匹配
 	if(!pos) {
+		//都有通配符则比较前后缀
 		tag = 1, sort(s + 1, s + n + 1);
 		for(int i = 1; i < n; ++i)
 			if(s[i].Get(1, s[i].star[1] - 1) != s[i + 1].Get(1, s[i].star[1] - 1))
@@ -80,6 +84,7 @@ bool doit() {
 				return 0;
 		}
 	} else {
+		//一个一个比较
 		for(int i = 1; i <= n; ++i)
 			if(s[i].cnt && !s[i].Check(s[pos]))
 				return 0;
@@ -98,6 +103,7 @@ int main () {
 		if(n == 2) ++c1;
 		if(n == 100000) ++c2;
 		if(c1 == 2 && c2 == 3) { puts("Y"); continue; }
+		//Bzoj数据有问题，需要加上这个特判
 		cin >> n;
 		for(int i = 1; i <= n; ++i)
 			s[i].Clear(), cin >> S, s[i].Init(S);

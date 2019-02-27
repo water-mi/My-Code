@@ -26,14 +26,16 @@ int hash(int x) {
 
 int doit(int x, int y) {
 	if(x == y) {
-		if(sc[x] != 0) return 0;
+		if(sc[x] != 0) return 0;//结果矩阵非零
 		if(x == 1) return 1;
 		for(int i = 1; i < x; ++i) tmp[i] = sc[i];
-		sort(tmp + 1, tmp + x);
-		int index = hash(x);
+		sort(tmp + 1, tmp + x);//顺序无关
+		int index = hash(x);//对数组进行哈希
 		return s.count(index) ? s[index] : s[index] = doit(x - 1, 1);
+		//记忆化
 	}
 	int ret = 0;
+	//搜索输赢情况
 	if(sc[x] >= 3) sc[x] -= 3, (ret += doit(x, y + 1)) %= P, sc[x] += 3;
 	if(sc[y] >= 3) sc[y] -= 3, (ret += doit(x, y + 1)) %= P, sc[y] += 3;
 	if(sc[x] && sc[y])

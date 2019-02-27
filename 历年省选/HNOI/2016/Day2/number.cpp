@@ -40,6 +40,7 @@ int main () {
 	read(P), scanf("%s", s + 1), read(m);
 	n = strlen(s + 1), Pow[0] = 1;
 	for(int i = 1; i <= n; ++i) Pow[i] = Pow[i - 1] * 10 % P;
+	//预处理10的幂
 	for(int i = n; i >= 1; --i)
 		f[i] = (Node){(f[i + 1].val + (s[i] - '0') * Pow[n - i]) % P, i};
 	sort(f + 1, f + n + 1);
@@ -47,6 +48,7 @@ int main () {
 		if(f[i].val != f[i - 1].val) ++tot;
 		hash[f[i].id] = tot;
 	}
+	//离散化
 	int size = sqrt(n);
 	for(int i = 1; i <= m; ++i)
 		read(L), read(R), q[i] = (Ques){L, R, L / size, i};
@@ -72,6 +74,7 @@ int main () {
 			ans[q[i].id] = now;
 		}
 	}
+	//分情况搞两个莫队。
 	for(int i = 1; i <= m; ++i) printf("%lld\n", ans[i]);
 	return 0;
 } 

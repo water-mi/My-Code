@@ -25,7 +25,7 @@ bool Hungary(int u, int tim) {
 	for(Rg int i = from[u]; i; i = e[i].nxt) {
 		int v = e[i].to;
 		if(vis[v] != tim) {
-			vis[v] = tim;
+			vis[v] = tim;//卡常使用时间戳，减少清空数组带来的常数增大
 			if(!match[v] || Hungary(match[v], tim)) { match[v] = u; return 1; }
 		}
 	} return 0;
@@ -39,9 +39,10 @@ void doit(int now) {
 	for(Rg int i = now; i; i -= i & -i) --ret;
 	for(Rg int i = 1; i <= poi; ++i)
 		if((1 << (x[i] - 1)) & now) addEdge(y[i], z[i]);
+	//拍扁后建立二分图模型
 	for(Rg int i = 1; i <= b; ++i) {
-		if(Hungary(i, i)) ++ret;
-		if(ret >= ans) return ;
+		if(Hungary(i, i)) ++ret;//二分图匹配
+		if(ret >= ans) return ;//最优性剪枝
 	} ans = ret;
 }
 
@@ -63,7 +64,8 @@ int main () {
 				}
 		if(MN == b) swap(a, b);
 		else if(MN == c) swap(a, c);
-		for(Rg int i = 0; i < (1 << a); ++i) doit(i);
+		//调整使得a<b<c
+		for(Rg int i = 0; i < (1 << a); ++i) doit(i);//状压枚举删去哪一层
 		printf("%d\n", ans);
 	}
 	return 0;
