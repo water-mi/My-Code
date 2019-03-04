@@ -61,7 +61,7 @@ int main () {
     FFT(a, 1), FFT(b, 1);
     for(int i = 0; i < n; ++i) a[i] = a[i] * b[i]; 
     FFT(a, -1), part2 = 0;//如果你也借用了part2记得清零
-    for(int i = tmpm; i <= tmpn + 1; ++i)
+    for(int i = tmpm + 1; i <= tmpn; ++i)
         part2 = max(part2, (ll)(a[i].x / n +.5));
 	//FFT求解第二部分的值
     printf("%lld\n", part1 + part3 - 2 * part2);
