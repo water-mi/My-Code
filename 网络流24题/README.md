@@ -18,13 +18,13 @@
 | 运输问题                                | trans.cpp   |  |
 | 分配问题                                | alloc.cpp   |  |
 | 负载平衡/负载平衡问题                   | balance.cpp |  |
-| 最长$k$可重区间集/最长$\mathrm{k}$可重区间集问题 | range.cpp   |  |
-| 星际转移/$\texttt{[CTSC1999]}$家园   | galaxy.cpp  |  |
+| 最长k可重区间集/最长k可重区间集问题 | range.cpp   |  |
+| 星际转移/[CTSC1999]家园   | galaxy.cpp  |  |
 | 孤岛营救问题                            | island.cpp  |  |
 | 航空路线问题                            | air.cpp     |  |
 | 汽车加油行驶问题                        | car.cpp    |  |
 | 深海机器人问题                          | robot.cpp   |  |
 | 火星探险问题                            | mars.cpp    |  |
 | 骑士共存问题                            | knight.cpp  |  |
-| 最长$\mathrm{k}$可重线段集问题       | segment.cpp |  |
+| 最长k可重线段集问题     | segment.cpp |  |
 | 机器人路径规划问题                      | NULL | 假题 |
