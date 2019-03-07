@@ -17,7 +17,7 @@ void read(T &x) {
 }
 
 const int _ = 8e5 + 10, Inf = 1e9 + 7;
-int n, m, val[_], ret, ulen, num, c[_], S, T;
+int n, m, val[_], ret, ulen, num, c[_], S, T, flag;
 char s[10010]; bool use[_];
 vector<int> tools[_];
 int cnt = 1, from[_], to[_], nxt[_], flow[_];
@@ -68,28 +68,25 @@ int main () {
 			++ulen;
 		}
 	}
-	int st1, ed1, st2, ed2, flag = 0;
-	st1 = cnt + 1;
 	for(int i = 1; i <= m; ++i) addEdge(S, i, val[i]);
-	ed1 = cnt, st2 = cnt + 1;
 	for(int i = 1; i <= n; ++i)
 		read(c[i]), addEdge(i + m, T, c[i]);
-	ed2 = cnt; vector<int>::iterator it;
+	vector<int>::iterator it;
 	for(int i = 1, j; i <= m; ++i)
 		for(it = tools[i].begin(); it != tools[i].end(); ++it)
 			j = *it, addEdge(i, j + m, Inf);
 	int __;
 	while(BFS()) while(__ = dinic(S, Inf)) ret -= __;
-	for(int i = st1; i <= ed1; i += 2)
-		if(dep[to[i]]) {
+	for(int i = 1; i <= m; ++i)
+		if(dep[i]) {
 			if(flag) printf(" ");
-			flag = 1, printf("%d", to[i]);
+			flag = 1, printf("%d", i);
 		}
 	puts(""), flag = 0;
-	for(int i = st2; i <= ed2; i += 2)
-		if(dep[to[i ^ 1]]) {
+	for(int i = 1; i <= n; ++i)
+		if(dep[i + m]) {
 			if(flag) printf(" ");
-			flag = 1, printf("%d", to[i ^ 1] - m);
+			flag = 1, printf("%d", i);
 		}
 	printf("\n%d\n", ret);
 	return 0;
