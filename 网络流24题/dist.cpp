@@ -49,7 +49,7 @@ int dinic(int u, int __) {
 	return __ - rest;
 }
 
-int go[N], outd[N];
+int go[N], ind[N];
 int main () {
 	freopen("dist.in", "r", stdin);
 	freopen("dist.out", "w", stdout);
@@ -64,9 +64,9 @@ int main () {
 	for(int u = 1; u <= n; ++u)
 		for(int i = from[u]; i; i = nxt[i])
 			if(!flow[i] && to[i] > n && to[i] < T)
-				go[u] = to[i] - n, ++outd[to[i] - n];
+				go[u] = to[i] - n, ++ind[to[i] - n];
 	for(int i = 1, u; i <= n; ++i) {
-		if(outd[i]) continue;
+		if(ind[i]) continue;
 		printf("%d", u = i);
 		while(go[u]) printf(" %d", u = go[u]);
 		puts("");
