@@ -60,7 +60,6 @@ int main () {
 		read(u), read(v), addEdge(u, v + n, 1);
 	int __;
 	while(BFS()) while(__ = dinic(S, Inf)) maxflow += __;
-	for(int i = 1; i <= n; ++i)
 	for(int u = 1; u <= n; ++u)
 		for(int i = from[u]; i; i = nxt[i])
 			if(!flow[i] && to[i] > n && to[i] < T)
