@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
-using std::queue;
+using std::queue; using std::fill;
 using std::min; using std::max;
 using std::swap; using std::sort;
 typedef long long ll;
@@ -15,20 +15,19 @@ void read(T &x) {
 	while(ch >= '0' && ch <= '9') x = x * 10 + ch - '0', ch = getchar(); x *= flag;
 }
 
-const int N = 2e3 + 10, _ = 4e6 + 10, Inf = 1e9 + 7;
-int n, p, fd, fw, sd, sw, S, T, r[N];
+const int N = 1e2 + 10, _ = 4e6 + 10, Inf = 1e9 + 7;
+int n, a[N], ave, S, T;
 int cnt = 1, from[_], to[_], nxt[_], flow[_], cost[_];
 inline void addEdge(int u, int v, int f, int c) {
 	to[++cnt] = v, nxt[cnt] = from[u], from[u] = cnt, flow[cnt] = f, cost[cnt] = c;
 	to[++cnt] = u, nxt[cnt] = from[v], from[v] = cnt, flow[cnt] = 0, cost[cnt] = -c;
 }
 
-int inc[_], dis[_], inq[_], pre[_]; queue<int> q;
-bool SPFA() {
-	memset(inq, 0, sizeof(int) * (T + 5));
-	std::fill(dis + 1, dis + T + 6, Inf);
-	while(q.size()) q.pop();
-	q.push(S), inc[S] = Inf, dis[S] = 0, inq[S] = 1;
+int maxflow, mincost; queue<int> q;
+int dis[_], inc[_], inq[_], pre[_];
+bool spfa() {
+	fill(dis + 1, dis + T + 6, Inf), dis[S] = 0;
+	while(q.size()) q.pop(); q.push(S), inq[S] = 1, inc[S] = Inf;
 	while(q.size()) {
 		int u = q.front(); q.pop(), inq[u] = 0;
 		for(int i = from[u]; i; i = nxt[i]) {
@@ -43,8 +42,6 @@ bool SPFA() {
 	}
 	return dis[T] < Inf;
 }
-
-int maxflow, mincost;
 void update() {
 	int x = T; maxflow += inc[T], mincost += inc[T] * dis[T];
 	while(x != S) {
@@ -54,18 +51,18 @@ void update() {
 }
 
 int main () {
-    freopen("cloth.in", "r", stdin);
-    freopen("cloth.out", "w", stdout);
-	read(n), read(p), read(fd), read(fw), read(sd), read(sw);
-	T = 2 * n + 1;
-	for(int i = 1; i <= n; ++i) {
-		addEdge(S, i + n, Inf, p), read(r[i]);
-		addEdge(S, i, r[i], 0), addEdge(i + n, T, r[i], 0);
-		if(i < n) addEdge(i, i + 1, Inf, 0);
-		if(i + fd <= n) addEdge(i, i + fd + n, Inf, fw);
-		if(i + sd <= n) addEdge(i, i + sd + n, Inf, sw);
-	}
-	while(SPFA()) update();
-	printf("%d\n", mincost);
-    return 0; 
+	freopen("balance.in", "r", stdin);
+	freopen("balance.out", "w", stdout);
+	read(n), T = n + 1;
+	for(int i = 1; i <= n; ++i) read(a[i]), ave += a[i];
+	if(n == 1) return puts("0"), 0;
+	if(n == 2) return printf("%d\n", abs(a[1] - a[2]) / 2), 0;
+	ave /= n;
+	for(int i = 1; i <= n; ++i)
+		addEdge(S, i, a[i], 0), addEdge(i, T, ave, 0);
+	for(int i = 1; i <= n; ++i)
+		addEdge(i, i == n ? 1 : i + 1, Inf, 1),
+		addEdge(i, i == 1 ? n : i - 1, Inf, 1);
+	while(spfa()) update(); printf("%d\n", mincost);
+	return 0;
 } 
