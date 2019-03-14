@@ -28,7 +28,8 @@
 | 最长k可重线段集问题                 | segment.cpp |                                |
 | 火星探险问题                        | mars.cpp    |                                |
 | 骑士共存问题                        | knight.cpp  |                                |
-| 孤岛营救问题                        | island.cpp  | 状压$\texttt{BFS}$             |
+| 孤岛营救问题                        | island.cpp  | 状压BFS                        |
 | 汽车加油行驶问题                    | car.cpp     | 分层图最短路（主流）/费用流    |
 | 软件补丁/软件补丁问题               | soft.cpp    | 状压最短路                     |
-| 机器人路径规划问题                  | robpath.cpp | $O(d^6)$动态规划               |
+| 机器人路径规划问题                  | robpath.cpp | O(d<sup>6</sup>)动态规划       |
+
